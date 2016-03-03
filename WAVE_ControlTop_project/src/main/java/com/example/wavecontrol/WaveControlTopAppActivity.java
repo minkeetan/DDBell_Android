@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ComponentName;
 import android.media.AudioManager;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 public class WaveControlTopAppActivity extends Activity
 {
+		private static final String TAG = "HeadsetActivity";
 		private HeadsetActionReceiver mHeadsetActionReceiver;
 		private AudioManager mAudioManager;
     private ComponentName mRemoteControlResponder;
@@ -23,33 +27,49 @@ public class WaveControlTopAppActivity extends Activity
         mHeadsetActionReceiver = new HeadsetActionReceiver();
         
         mAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        mRemoteControlResponder = new ComponentName(getPackageName(), HeadsetActionReceiver.class.getName());
+        mRemoteControlResponder = new ComponentName(getPackageName(), mHeadsetActionReceiver.getClass().getName());
     }
     
     @Override 
     public void onResume() 
     {
     		super.onResume();
-    		//IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
-    		//filter.setPriority(1000); //this line sets receiver priority
     		registerReceiver(mHeadsetActionReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-    		//registerReceiver(myHeadsetActionReceiver, filter);
     		mAudioManager.registerMediaButtonEventReceiver(mRemoteControlResponder);
     		
 		}
 
-		@Override 
-		public void onPause() 
-		{
-    		//unregisterReceiver(mHeadsetActionReceiver);
-    		super.onPause();
-		}
-		
     @Override
     public void onDestroy()
     {
         super.onDestroy();
         mAudioManager.unregisterMediaButtonEventReceiver(mRemoteControlResponder);
         unregisterReceiver(mHeadsetActionReceiver);
+    }
+    
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event)
+    {
+    		int action = event.getAction();
+        int keyCode = event.getKeyCode();
+        switch (keyCode) 
+        {
+        		case KeyEvent.KEYCODE_VOLUME_DOWN:
+        				if(KeyEvent.ACTION_DOWN == action)
+								{
+        					Log.d(TAG, "dispatchKeyEvent: Volume down is pressed");
+		            	Toast.makeText(getApplicationContext(), "dispatchKeyEvent: Volume down", Toast.LENGTH_SHORT).show();
+		            }
+            		return false;
+        		case KeyEvent.KEYCODE_VOLUME_UP:
+        				if(KeyEvent.ACTION_DOWN == action)
+								{        		
+        					Log.d(TAG, "dispatchKeyEvent: Volume up is pressed");
+		            	Toast.makeText(getApplicationContext(), "dispatchKeyEvent: Volume up", Toast.LENGTH_SHORT).show();
+		            }
+		            return false;
+        		default:
+            		return super.dispatchKeyEvent(event);
+        }
     }		
 }

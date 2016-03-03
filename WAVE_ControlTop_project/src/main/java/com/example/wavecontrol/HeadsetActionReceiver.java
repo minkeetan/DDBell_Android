@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-import android.view.KeyEvent;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 public class HeadsetActionReceiver extends BroadcastReceiver
 {
@@ -32,6 +32,7 @@ public class HeadsetActionReceiver extends BroadcastReceiver
 		                break;
 		            default:
 		                Log.d(TAG, "I have no idea what the headset state is");
+		                Toast.makeText(context, "I have no idea what the headset state is", Toast.LENGTH_SHORT).show();
 		                break;
             }
     		}
@@ -41,31 +42,40 @@ public class HeadsetActionReceiver extends BroadcastReceiver
         		
         		int extraAction = extraEvent.getAction();
         		int extraKeyCode = extraEvent.getKeyCode();
-						
-        		if(KeyEvent.ACTION_UP == extraAction) 
-        		{
-        				switch(extraKeyCode)
-								{
-										case KeyEvent.KEYCODE_VOLUME_DOWN:
-												Log.d(TAG, "Volume down is pressed");
-		                		Toast.makeText(context, context.getString(R.string.volume_down), Toast.LENGTH_SHORT).show();
-												break;
+						 
+        		switch(extraKeyCode)
+						{
+								case KeyEvent.KEYCODE_VOLUME_DOWN:
+										if(KeyEvent.ACTION_DOWN == extraAction)
+										{
+											Log.d(TAG, "Volume down is pressed");
+		                	Toast.makeText(context, context.getString(R.string.volume_down), Toast.LENGTH_SHORT).show();
+		                }
+										break;
 								
-										case KeyEvent.KEYCODE_VOLUME_UP:
-												Log.d(TAG, "Volume up is pressed");
-		                		Toast.makeText(context, context.getString(R.string.volume_up), Toast.LENGTH_SHORT).show();
-												break;
+								case KeyEvent.KEYCODE_VOLUME_UP:
+										if(KeyEvent.ACTION_DOWN == extraAction)
+										{
+											Log.d(TAG, "Volume up is pressed");
+		                	Toast.makeText(context, context.getString(R.string.volume_up), Toast.LENGTH_SHORT).show();
+		                }
+										break;
 										
-										case KeyEvent.KEYCODE_HEADSETHOOK:
-												Log.d(TAG, "Play/pause/hook is pressed");
-		                		Toast.makeText(context, context.getString(R.string.media_play_pause), Toast.LENGTH_SHORT).show();
-												break;
+								case KeyEvent.KEYCODE_HEADSETHOOK:
+										if(KeyEvent.ACTION_DOWN == extraAction)
+										{
+											Log.d(TAG, "Play/pause/hook is pressed");
+		                	Toast.makeText(context, context.getString(R.string.media_play_pause), Toast.LENGTH_SHORT).show();
+		                }
+										break;
 										
-										default:
-												Log.d(TAG, "Unknown Keycode");
-												Toast.makeText(context, "Unknown Keycode:" + extraKeyCode, Toast.LENGTH_SHORT).show();
-												break;		
-								}
+								default:
+										if(KeyEvent.ACTION_DOWN == extraAction)
+										{
+											Log.d(TAG, "Unknown Keycode");
+											Toast.makeText(context, "Unknown Keycode:" + extraKeyCode, Toast.LENGTH_SHORT).show();
+										}
+										break;
         		}
     		}
 		}
