@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WaveControlTopAppActivity</string>
+    <string name="welcome_message">Plugin the Headset to begin</string>
+    <string name="headset_unplugged">Headset is unplugged</string>
+    <string name="headset_plugged">Headset is plugged</string>
+    <string name="volume_down">Volume down is pressed</string>
+    <string name="volume_up">Volume up is pressed</string>
+    <string name="media_play_pause">Play/pause/hook is pressed</string>
+</resources>
